@@ -12,11 +12,11 @@ const geistMono = Geist_Mono({
 });
 
 // SERVER-SIDE API CALL
-export async function getServerSideProps() {
+export async function getServerSideProps({ res }) {
   const GOOD_URL = "https://jsonplaceholder.typicode.com/todos/1";
   const BAD_URL = "https://jsonplaceholder.typicode.com/invalid";
 
-  const shouldFail = Math.random() < 0.3; // 30% failure
+  const shouldFail = Math.random() < 0.3;
   const url = shouldFail ? BAD_URL : GOOD_URL;
 
   try {
@@ -32,7 +32,8 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
-    console.log(error);
+    res.statusCode = 500;
+
     return {
       props: {
         data: null,
